@@ -1,139 +1,196 @@
 #!/usr/bin/env python3
 
 from os import system as sys
+import subprocess
 
 class Main:	
-	def __init__(self, packages, parupkg):
-		self.packages = packages
-		self.parupkg = parupkg
+    def __init__(self, packages, parupkg):
+        self.packages = packages
+        self.parupkg = parupkg
 
-		self.install = "sudo pacman -Syu --needed"
-		self.pinstall = "paru -Syu --needed"
+        self.install = "sudo pacman -Syu --needed"
+        self.pinstall = "paru -Syu --needed"
 
-	def base(self, packages):
-		sys(f"{self.install} {' '.join(packages)}")
-		sys("sudo cp ./bin/update-grub /usr/local/bin")
-		sys("sudo chmod +x /usr/local/bin/update-grub")
+    def run_command(self, command):
+        """Helper method to run commands sequentially"""
+        print(f"\n[>>] Executing: {command}")
+        result = subprocess.run(command, shell=True)
+        if result.returncode != 0:
+            print(f"[!!] Error executing: {command}")
+        return result
 
-	def nm_fixes(self):
-		sys("sudo systemctl enable --now systemd-resolved")
-		sys("sudo ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf")
-		sys("sudo cp ./config/nm/dns.conf /etc/NetworkManager/conf.d/")
-		sys("sudo systemctl restart NetworkManager")
+    def base(self, packages):
+        self.run_command(f"{self.install} {' '.join(packages)}")
+        self.run_command("sudo cp ./bin/update-grub /usr/local/bin")
+        self.run_command("sudo chmod +x /usr/local/bin/update-grub")
 
-	def cp_config(self):
-		sys("rm -rf ~/.config/mako")
-		sys("rm -rf ~/.config/hypr")
-		sys("rm -rf ~/.config/rofi")
-		sys("rm -rf ~/.config/waybar")
-		sys("rm -rf ~/.config/foor")
-		sys("cp -r config/mako ~/.config")
-		sys("cp -r config/hypr ~/.config")
-		sys("cp -r config/rofi ~/.config")
-		sys("cp -r config/waybar ~/.config")
-		sys("cp -r config/foot ~/.config")
-		sys("cp -r Pictures ~/")
+    def nm_fixes(self):
+        self.run_command("sudo systemctl enable --now systemd-resolved")
+        self.run_command("sudo ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf")
+        self.run_command("sudo cp ./config/nm/dns.conf /etc/NetworkManager/conf.d/")
+        self.run_command("sudo systemctl restart NetworkManager")
 
-	def base_paru(self, packages):
-		sys(f"{self.pinstall} {' '.join(packages)}")
+    def cp_config(self):
+        self.run_command("mkdir -p ~/.config-backup")
+        config_dirs = ["mako", "hypr", "rofi", "waybar", "foot"]
+        for dir in config_dirs:
+            self.run_command(f"rm -rf ~/.config/{dir}")
+        self.run_command("cp -r config/mako ~/.config")
+        self.run_command("cp -r config/hypr ~/.config")
+        self.run_command("cp -r config/rofi ~/.config")
+        self.run_command("cp -r config/waybar ~/.config")
+        self.run_command("cp -r config/foot ~/.config")
+        self.run_command("cp -r Pictures ~/")
 
-	def fish(self):
-		sys(f"{self.install} fish")
-		sys("sudo chsh -s /bin/fish; chsh -s /bin/fish")
+    def base_paru(self, packages):
+        if packages:
+            self.run_command(f"{self.pinstall} {' '.join(packages)}")
 
-	def paru(self):
-		sys("git clone https://aur.archlinux.org/paru.git && cd paru && makepkg -si && cd ../ && rm -rf ./paru")
+    def fish(self):
+        self.run_command(f"{self.install} fish")
+        self.run_command("sudo chsh -s /bin/fish")
+        self.run_command("chsh -s /bin/fish")
 
-	def fastest_mirrors(self):
-		sys("sudo cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup")
-		sys(f"{self.pinstall} rate-mirrors")
-		print("finding best mirrors...")
-		sys("rate-mirrors arch | grep '^Server' | sudo tee /etc/pacman.d/mirrorlist")
+    def paru(self):
+        self.run_command("git clone https://aur.archlinux.org/paru.git")
+        self.run_command("cd paru && makepkg -si --noconfirm")
+        self.run_command("cd ../ && rm -rf ./paru")
 
-	def ex_base(self, packages):
-		sys(f"{self.install} {' '.join(packages)}")	
+    def fastest_mirrors(self):
+        self.run_command("sudo cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup")
+        self.run_command(f"{self.install} rate-mirrors")
+        print("[**] Finding fastest mirrors...")
+        self.run_command("rate-mirrors arch | sudo tee /etc/pacman.d/mirrorlist")
 
-	def main(self):
-		self.base(self.packages)
-		#self.fish()
-		#self.paru()
-		#fastest_mirrors()
-		self.base_paru(self.parupkg)
-		#self.cp_configs()
-		self.nm_fixes()
-		sys("sudo cp config/system/mount_options.conf /etc/udisks2 && sudo systemctl restart udisks2")
-		sys("sudo systemctl enable --now ly@tty1")
-		
+    def ex_base(self, packages):
+        if packages:
+            self.run_command(f"{self.install} {' '.join(packages)}")
+
+    def setup_udisks(self):
+        self.run_command("sudo cp config/system/mount_options.conf /etc/udisks2")
+        self.run_command("sudo systemctl restart udisks2")
+
+    def setup_login_manager(self):
+        self.run_command("sudo systemctl enable --now ly@tty1")
+
+    def main(self):
+        print("\n" + "="*50)
+        print("INSTALLATION STARTED")
+        print("="*50 + "\n")
+        
+        # 1. Base packages installation
+        print("\n[1/10] Installing base packages...")
+        self.base(self.packages)
+        
+        # 2. Fish shell installation
+        print("\n[2/10] Installing and configuring fish...")
+        self.fish()
+        
+        # 3. Paru installation
+        print("\n[3/10] Installing paru (AUR helper)...")
+        self.paru()
+        
+        # 4. Mirror optimization
+        print("\n[4/10] Optimizing mirrors...")
+        self.fastest_mirrors()
+        
+        # 5. AUR packages installation
+        print("\n[5/10] Installing AUR packages...")
+        self.base_paru(self.parupkg)
+        
+        # 6. Config files copying
+        print("\n[6/10] Copying configuration files...")
+        self.cp_config()
+        
+        # 7. NetworkManager configuration
+        print("\n[7/10] Configuring NetworkManager...")
+        self.nm_fixes()
+        
+        # 8. Udisks2 configuration
+        print("\n[8/10] Configuring udisks2...")
+        self.setup_udisks()
+        
+        # 9. Login manager setup
+        print("\n[9/10] Enabling login manager (ly)...")
+        self.setup_login_manager()
+        
+        # 10. External packages installation
+        print("\n[10/10] Installing additional packages...")
+        self.ex_base(external_packages)
+        
+        print("\n" + "="*50)
+        print("INSTALLATION COMPLETE!")
+        print("="*50 + "\n")
+
 if __name__ == "__main__":
-	packages = [
-		"linux-zen"
-		"linux-headers",
-		"linux-zen-headers",
-		"base-devel",
-		"git",
-		"python",
-		"nano",
-		"fastfetch",
-		"os-prober",
-		"nvidia-open-dkms",
-		"nvidia-utils",
-		"lib32-nvidia-utils",
-		"egl-wayland",
-		"pipewire",
-		"pipewire-pulse",
-		"wireplumber",
-		"pavucontrol",
-		"hyprland",
-		"wayland",
-		"wayland-protocols",
-		"xdg-desktop-portal-hyprland",
-		"xdg-desktop-portal-gtk",
-		"noto-fonts",
-		"noto-fonts-emoji",
-		"noto-fonts-cjk",
-		"ttf-dejavu",
-		"ttf-liberation",
-		"ttf-fira-code",
-		"foot",
-		"hyprpaper",
-		"polkit-gnome",
-		"mako",
-		"nautilus",
-		"rofi",
-		"firefox",
-		"ly",
-		"network-manager-applet",
-		"ntfs-3g",
-		"waybar",
-		"qt5ct",
-		"qt6ct",
-		"ttf-jetbrains-mono-nerd",
-		"copyq",
-		"hypridle",
-		"hyprlock",
-		"python-gobject",
-		"hyprshot",
-		"gnome-themes-extra",
-		"woff2-font-awesome",
-		"otf-font-awesome",
-		"gnome-system-monitor",
-		"networkmanager",
-		"grub",
-		"github-cli"
-	]
+    packages = [
+        "linux-zen",
+        "linux-headers",
+        "linux-zen-headers",
+        "base-devel",
+        "git",
+        "python",
+        "nano",
+        "fastfetch",
+        "os-prober",
+        "nvidia-open-dkms",
+        "nvidia-utils",
+        "lib32-nvidia-utils",
+        "egl-wayland",
+        "pipewire",
+        "pipewire-pulse",
+        "wireplumber",
+        "pavucontrol",
+        "hyprland",
+        "wayland",
+        "wayland-protocols",
+        "xdg-desktop-portal-hyprland",
+        "xdg-desktop-portal-gtk",
+        "noto-fonts",
+        "noto-fonts-emoji",
+        "noto-fonts-cjk",
+        "ttf-dejavu",
+        "ttf-liberation",
+        "ttf-fira-code",
+        "foot",
+        "hyprpaper",
+        "polkit-gnome",
+        "mako",
+        "nautilus",
+        "rofi",
+        "firefox",
+        "ly",
+        "network-manager-applet",
+        "ntfs-3g",
+        "waybar",
+        "qt5ct",
+        "qt6ct",
+        "ttf-jetbrains-mono-nerd",
+        "copyq",
+        "hypridle",
+        "hyprlock",
+        "python-gobject",
+        "hyprshot",
+        "gnome-themes-extra",
+        "woff2-font-awesome",
+        "otf-font-awesome",
+        "gnome-system-monitor",
+        "networkmanager",
+        "grub",
+        "github-cli"
+    ]
 
-	parupkg = [
-		"amneziavpn",
-		"xone-dkms"	
-	]
+    parupkg = [
+        "amneziavpn",
+        "xone-dkms"	
+    ]
 
-	external_packages = [
-		"telegram-desktop",
-		"steam",
-		"discord",
-		"prismlauncher"
-	]
+    external_packages = [
+        "telegram-desktop",
+        "steam",
+        "discord",
+        "prismlauncher"
+    ]
 
-	main = Main(packages, parupkg)
-	main.main()
-	main.ex_base(external_packages)
+    main = Main(packages, parupkg)
+    main.main()
