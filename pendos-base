@@ -8,9 +8,6 @@ class Main:
         self.packages = packages
         self.parupkg = parupkg
 
-        self.install = "sudo pacman -Syu --needed"
-        self.pinstall = "paru -Syu --needed"
-
     def run_command(self, command):
         """Helper method to run commands sequentially"""
         print(f"\n[>>] Executing: {command}")
@@ -19,8 +16,14 @@ class Main:
             print(f"[!!] Error executing: {command}")
         return result
 
+    def install(packages):
+	    self.run_command(f"sudo pacman -Syu --needed {' '.join(packages)}")
+
+    def pinstall(packages):
+	    self.run_command(f"paru -Syu --needed {' '.join(packages)}")
+
     def base(self, packages):
-        self.run_command(f"{self.install} {' '.join(packages)}")
+        self.install(packages)
         self.run_command("sudo cp ./bin/update-grub /usr/local/bin")
         self.run_command("sudo chmod +x /usr/local/bin/update-grub")
 
@@ -35,19 +38,15 @@ class Main:
         config_dirs = ["mako", "hypr", "rofi", "waybar", "foot"]
         for dir in config_dirs:
             self.run_command(f"rm -rf ~/.config/{dir}")
-        self.run_command("cp -r config/mako ~/.config")
-        self.run_command("cp -r config/hypr ~/.config")
-        self.run_command("cp -r config/rofi ~/.config")
-        self.run_command("cp -r config/waybar ~/.config")
-        self.run_command("cp -r config/foot ~/.config")
+        for dir in config_dirs:
+            self.run_command("cp -r config/{dir}} ~/.config")
         self.run_command("cp -r Pictures ~/")
 
     def base_paru(self, packages):
         if packages:
-            self.run_command(f"{self.pinstall} {' '.join(packages)}")
+            self.pinstall(packages)
 
     def fish(self):
-        self.run_command(f"{self.install} fish")
         self.run_command("sudo chsh -s /bin/fish")
         self.run_command("chsh -s /bin/fish")
 
@@ -58,13 +57,8 @@ class Main:
 
     def fastest_mirrors(self):
         self.run_command("sudo cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup")
-        self.run_command(f"{self.install} rate-mirrors")
         print("[**] Finding fastest mirrors...")
         self.run_command("rate-mirrors arch | sudo tee /etc/pacman.d/mirrorlist")
-
-    def ex_base(self, packages):
-        if packages:
-            self.run_command(f"{self.install} {' '.join(packages)}")
 
     def setup_udisks(self):
         self.run_command("sudo cp config/system/mount_options.conf /etc/udisks2")
@@ -114,10 +108,6 @@ class Main:
         print("\n[9/10] Enabling login manager (ly)...")
         self.setup_login_manager()
         
-        # 10. External packages installation
-        print("\n[10/10] Installing additional packages...")
-        self.ex_base(external_packages)
-        
         print("\n" + "="*50)
         print("INSTALLATION COMPLETE!")
         print("="*50 + "\n")
@@ -125,7 +115,6 @@ class Main:
 if __name__ == "__main__":
     packages = [
         "linux-zen",
-        "linux-headers",
         "linux-zen-headers",
         "base-devel",
         "git",
@@ -177,19 +166,20 @@ if __name__ == "__main__":
         "gnome-system-monitor",
         "networkmanager",
         "grub",
-        "github-cli"
-    ]
-
-    parupkg = [
-        "amneziavpn",
-        "xone-dkms"	
-    ]
-
-    external_packages = [
+        "github-cli",
         "telegram-desktop",
         "steam",
         "discord",
-        "prismlauncher"
+        "prismlauncher",
+        "code",
+        "fish"
+    ]
+
+    parupkg = [
+        "rate_mirror",
+        "amneziavpn",
+        "xone-dkms",
+        "jdk21-temurin"
     ]
 
     main = Main(packages, parupkg)
