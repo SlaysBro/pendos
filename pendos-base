@@ -1,0 +1,139 @@
+#!/usr/bin/env python3
+
+from os import system as sys
+
+class Main:	
+	def __init__(self, packages, parupkg):
+		self.packages = packages
+		self.parupkg = parupkg
+
+		self.install = "sudo pacman -Syu --needed"
+		self.pinstall = "paru -Syu --needed"
+
+	def base(self, packages):
+		sys(f"{self.install} {' '.join(packages)}")
+		sys("sudo cp ./bin/update-grub /usr/local/bin")
+		sys("sudo chmod +x /usr/local/bin/update-grub")
+
+	def nm_fixes(self):
+		sys("sudo systemctl enable --now systemd-resolved")
+		sys("sudo ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf")
+		sys("sudo cp ./config/nm/dns.conf /etc/NetworkManager/conf.d/")
+		sys("sudo systemctl restart NetworkManager")
+
+	def cp_config(self):
+		sys("rm -rf ~/.config/mako")
+		sys("rm -rf ~/.config/hypr")
+		sys("rm -rf ~/.config/rofi")
+		sys("rm -rf ~/.config/waybar")
+		sys("rm -rf ~/.config/foor")
+		sys("cp -r config/mako ~/.config")
+		sys("cp -r config/hypr ~/.config")
+		sys("cp -r config/rofi ~/.config")
+		sys("cp -r config/waybar ~/.config")
+		sys("cp -r config/foot ~/.config")
+		sys("cp -r Pictures ~/")
+
+	def base_paru(self, packages):
+		sys(f"{self.pinstall} {' '.join(packages)}")
+
+	def fish(self):
+		sys(f"{self.install} fish")
+		sys("sudo chsh -s /bin/fish; chsh -s /bin/fish")
+
+	def paru(self):
+		sys("git clone https://aur.archlinux.org/paru.git && cd paru && makepkg -si && cd ../ && rm -rf ./paru")
+
+	def fastest_mirrors(self):
+		sys("sudo cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup")
+		sys(f"{self.pinstall} rate-mirrors")
+		print("finding best mirrors...")
+		sys("rate-mirrors arch | grep '^Server' | sudo tee /etc/pacman.d/mirrorlist")
+
+	def ex_base(self, packages):
+		sys(f"{self.install} {' '.join(packages)}")	
+
+	def main(self):
+		self.base(self.packages)
+		#self.fish()
+		#self.paru()
+		#fastest_mirrors()
+		self.base_paru(self.parupkg)
+		#self.cp_configs()
+		self.nm_fixes()
+		sys("sudo cp config/system/mount_options.conf /etc/udisks2 && sudo systemctl restart udisks2")
+		sys("sudo systemctl enable --now ly@tty1")
+		
+if __name__ == "__main__":
+	packages = [
+		"linux-zen"
+		"linux-headers",
+		"linux-zen-headers",
+		"base-devel",
+		"git",
+		"python",
+		"nano",
+		"fastfetch",
+		"os-prober",
+		"nvidia-open-dkms",
+		"nvidia-utils",
+		"lib32-nvidia-utils",
+		"egl-wayland",
+		"pipewire",
+		"pipewire-pulse",
+		"wireplumber",
+		"pavucontrol",
+		"hyprland",
+		"wayland",
+		"wayland-protocols",
+		"xdg-desktop-portal-hyprland",
+		"xdg-desktop-portal-gtk",
+		"noto-fonts",
+		"noto-fonts-emoji",
+		"noto-fonts-cjk",
+		"ttf-dejavu",
+		"ttf-liberation",
+		"ttf-fira-code",
+		"foot",
+		"hyprpaper",
+		"polkit-gnome",
+		"mako",
+		"nautilus",
+		"rofi",
+		"firefox",
+		"ly",
+		"network-manager-applet",
+		"ntfs-3g",
+		"waybar",
+		"qt5ct",
+		"qt6ct",
+		"ttf-jetbrains-mono-nerd",
+		"copyq",
+		"hypridle",
+		"hyprlock",
+		"python-gobject",
+		"hyprshot",
+		"gnome-themes-extra",
+		"woff2-font-awesome",
+		"otf-font-awesome",
+		"gnome-system-monitor",
+		"networkmanager",
+		"grub",
+		"github-cli"
+	]
+
+	parupkg = [
+		"amneziavpn",
+		"xone-dkms"	
+	]
+
+	external_packages = [
+		"telegram-desktop",
+		"steam",
+		"discord",
+		"prismlauncher"
+	]
+
+	main = Main(packages, parupkg)
+	main.main()
+	main.ex_base(external_packages)
