@@ -178,7 +178,14 @@ if __name__ == "__main__":
         "prismlauncher",
         "code",
         "fish",
-        "xorg-xhost"
+        "xorg-xhost",
+        "intellij-idea-community-edition",
+        "gvfs",
+        "gvfs-mtp",
+        "gvfs-gphoto2",
+        "file-roller",
+        "p7zip",
+        "unzip"
     ]
 
     parupkg = [
@@ -186,7 +193,8 @@ if __name__ == "__main__":
         "amneziavpn",
         "xone-dkms",
         "jdk21-temurin",
-        "portproton"
+        "portproton",
+        "xone-dongle-firmware"
     ]
 
     main = Main(packages, parupkg)
