@@ -9,7 +9,7 @@ class Main:
         self.parupkg = parupkg
 
     def que(self, str):
-        if input(f"{str} Y/n" ).lower() == 'y':
+        if input(f"{str} Y/n ").lower() == 'y':
             return True
         return False
 
@@ -152,7 +152,7 @@ if __name__ == "__main__":
         "mako",
         "nautilus",
         "rofi",
-        #"firefox",
+        "firefox",
         "ly",
         "network-manager-applet",
         "ntfs-3g",
@@ -172,11 +172,11 @@ if __name__ == "__main__":
         "networkmanager",
         "grub",
         "github-cli",
-        #"telegram-desktop",
-        #"steam",
-        #"discord",
-        #"prismlauncher",
-        #"code",
+        "telegram-desktop",
+        "steam",
+        "discord",
+        "prismlauncher",
+        "code",
         "fish",
         "xorg-xhost"
     ]
