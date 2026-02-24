@@ -20,14 +20,13 @@ window#waybar {
 }
 
 .modules-left {
-    padding: 0 10px; 
+    padding: 3px 10px 3px 0;
 }
 
 #clock,
 #cpu,
 #memory,
 #pulseaudio,
-#custom-media,
 #tray,
 #idle_inhibitor,
 #language {
@@ -43,7 +42,6 @@ window#waybar {
 #cpu:hover,
 #memory:hover,
 #pulseaudio:hover,
-#custom-media:hover,
 #tray:hover,
 #idle_inhibitor:hover,
 #language:hover {
@@ -53,10 +51,9 @@ window#waybar {
 #workspaces button {
     background: transparent;
     font-weight: 900;
-    font-size: 13pt;
     color: #e6e8ee;
     border: none;
-    border-radius: 100px;
+    border-radius: 100%;
 }
 
 #workspaces button.active {
@@ -82,7 +79,7 @@ window#waybar {
 }
 
 #custom-power {
-    padding: 0 12px;
+    padding: 0 15px;
     border-radius: 100px;
     font-size: 17px;
     color: #e06c75;

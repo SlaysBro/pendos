@@ -184,8 +184,13 @@ if __name__ == "__main__":
         "gvfs-mtp",
         "gvfs-gphoto2",
         "file-roller",
-        "p7zip",
-        "unzip"
+        "gvfs-afc",
+        "tumbler",
+        "ffmpegthumbnailer",
+        "gvfs-google",
+        "poppler-glib",
+        "gvfs-nfs",
+        "unrar"
     ]
 
     parupkg = [

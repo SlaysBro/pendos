@@ -1,25 +1,24 @@
 {
     "layer": "top",
     "position": "top",
-    "height": 45,
+    "height": 55,
     "spacing": 6,
 
     "modules-left": [
         "custom/arch",
-        "hyprland/workspaces",
-	    "hyprland/window"
+        "hyprland/workspaces"
     ],
 
     "modules-center": [ 
-	    "cpu",
-	    "memory"
+        "cpu",
+        "memory"
     ],
 
     "modules-right": [
         "idle_inhibitor",
         "pulseaudio",
         "clock",
-	    "hyprland/language",
+        "hyprland/language",
         "tray",
         "custom/power"
     ],
