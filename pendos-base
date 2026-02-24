@@ -83,15 +83,15 @@ class Main:
         
         # 2. Fish shell installation
         print("\n[2/10] Installing and configuring fish...")
-        if que("Wanna install fish?"): self.fish()
+        if self.que("Wanna install fish?"): self.fish()
         
         # 3. Paru installation
         print("\n[3/10] Installing paru (AUR helper)...")
-        if que("Wanna install paru?"): self.paru()
+        if self.que("Wanna install paru?"): self.paru()
         
         # 4. Mirror optimization
         print("\n[4/10] Optimizing mirrors...")
-        if que("Wanna find best mirrors?"): self.fastest_mirrors()
+        if self.que("Wanna find best mirrors?"): self.fastest_mirrors()
         
         # 5. AUR packages installation
         print("\n[5/10] Installing AUR packages...")
