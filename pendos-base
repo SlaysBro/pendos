@@ -8,7 +8,7 @@ class Main:
         self.packages = packages
         self.parupkg = parupkg
 
-    def que(str):
+    def que(self, str):
         if input("{str} Y/n").lower() == 'y':
             return True
         return False
