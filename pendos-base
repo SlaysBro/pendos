@@ -8,6 +8,11 @@ class Main:
         self.packages = packages
         self.parupkg = parupkg
 
+    def que(str):
+        if input("{str} Y/n").lower() == 'y':
+            return True
+        return False
+
     def run_command(self, command):
         """Helper method to run commands sequentially"""
         print(f"\n[>>] Executing: {command}")
@@ -78,15 +83,15 @@ class Main:
         
         # 2. Fish shell installation
         print("\n[2/10] Installing and configuring fish...")
-        self.fish()
+        if que("Wanna install fish?"): self.fish()
         
         # 3. Paru installation
         print("\n[3/10] Installing paru (AUR helper)...")
-        self.paru()
+        if que("Wanna install paru?"): self.paru()
         
         # 4. Mirror optimization
         print("\n[4/10] Optimizing mirrors...")
-        self.fastest_mirrors()
+        if que("Wanna find best mirrors?") self.fastest_mirrors()
         
         # 5. AUR packages installation
         print("\n[5/10] Installing AUR packages...")
@@ -172,14 +177,16 @@ if __name__ == "__main__":
         "discord",
         "prismlauncher",
         "code",
-        "fish"
+        "fish",
+        "xorg-host"
     ]
 
     parupkg = [
         "rate_mirror",
         "amneziavpn",
         "xone-dkms",
-        "jdk21-temurin"
+        "jdk21-temurin",
+        "portproton"
     ]
 
     main = Main(packages, parupkg)
