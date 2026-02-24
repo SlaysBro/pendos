@@ -152,7 +152,7 @@ if __name__ == "__main__":
         "mako",
         "nautilus",
         "rofi",
-        "firefox",
+        #"firefox",
         "ly",
         "network-manager-applet",
         "ntfs-3g",
@@ -172,13 +172,13 @@ if __name__ == "__main__":
         "networkmanager",
         "grub",
         "github-cli",
-        "telegram-desktop",
-        "steam",
-        "discord",
-        "prismlauncher",
-        "code",
+        #"telegram-desktop",
+        #"steam",
+        #"discord",
+        #"prismlauncher",
+        #"code",
         "fish",
-        "xorg-host"
+        "xorg-xhost"
     ]
 
     parupkg = [
