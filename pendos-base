@@ -9,7 +9,7 @@ class Main:
         self.parupkg = parupkg
 
     def que(self, str):
-        if input("{str} Y/n").lower() == 'y':
+        if input(f"{str} Y/n" ).lower() == 'y':
             return True
         return False
 
