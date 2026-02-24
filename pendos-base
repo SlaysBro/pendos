@@ -91,7 +91,7 @@ class Main:
         
         # 4. Mirror optimization
         print("\n[4/10] Optimizing mirrors...")
-        if que("Wanna find best mirrors?") self.fastest_mirrors()
+        if que("Wanna find best mirrors?"): self.fastest_mirrors()
         
         # 5. AUR packages installation
         print("\n[5/10] Installing AUR packages...")
