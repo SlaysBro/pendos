@@ -21,10 +21,10 @@ class Main:
             print(f"[!!] Error executing: {command}")
         return result
 
-    def install(packages):
+    def install(self, packages):
 	    self.run_command(f"sudo pacman -Syu --needed {' '.join(packages)}")
 
-    def pinstall(packages):
+    def pinstall(self, packages):
 	    self.run_command(f"paru -Syu --needed {' '.join(packages)}")
 
     def base(self, packages):
