@@ -44,7 +44,7 @@ class Main:
         for dir in config_dirs:
             self.run_command(f"rm -rf ~/.config/{dir}")
         for dir in config_dirs:
-            self.run_command("cp -r config/{dir}} ~/.config")
+            self.run_command(f"cp -r config/{dir} ~/.config")
         self.run_command("cp -r Pictures ~/")
 
     def base_paru(self, packages):
