@@ -190,7 +190,8 @@ if __name__ == "__main__":
         "gvfs-google",
         "poppler-glib",
         "gvfs-nfs",
-        "unrar"
+        "unrar",
+        "obsidian"
     ]
 
     parupkg = [
