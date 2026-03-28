@@ -1,11 +1,10 @@
 {
-    "layer": "top",
+    "layer": "bottom",
     "position": "top",
     "height": 55,
     "spacing": 6,
-
+    "exclusive": true,
     "modules-left": [
-        "custom/arch",
         "hyprland/workspaces"
     ],
 
