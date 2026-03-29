@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from os import system as sys
+from os import scandir
 import subprocess
 
 class Main:	
@@ -40,11 +41,11 @@ class Main:
 
     def cp_config(self):
         self.run_command("mkdir -p ~/.config-backup")
-        config_dirs = ["mako", "hypr", "rofi", "waybar", "foot"]
-        for dir in config_dirs:
+        
+        directories = [entry.name for entry in scandir("./config/dotconfig") if entry.is_dir()]
+        for dir in directories:
             self.run_command(f"rm -rf ~/.config/{dir}")
-        for dir in config_dirs:
-            self.run_command(f"cp -r config/{dir} ~/.config")
+            self.run_command(f"cp -r config/dotconfig/{dir} ~/.config")
         self.run_command("cp -r Pictures ~/")
 
     def base_paru(self, packages):
@@ -119,21 +120,40 @@ class Main:
 
 if __name__ == "__main__":
     packages = [
+        # Kernel and drivers
         "linux-zen", "linux-zen-headers", "base-devel", "git", "python", 
         "nano", "fastfetch", "os-prober", "nvidia-open-dkms", "nvidia-utils", 
-        "lib32-nvidia-utils", "egl-wayland", "pipewire", "pipewire-pulse", 
-        "wireplumber", "pavucontrol", "hyprland", "wayland", "wayland-protocols", 
+        "lib32-nvidia-utils", "egl-wayland", "libva-nvidia-driver", # Добавил VA-API для NVIDIA
+
+        # Sound
+        "pipewire", "pipewire-pulse", "wireplumber", "pavucontrol", 
+
+        # Hyprland and needs
+        "hyprland", "wayland", "wayland-protocols", 
         "xdg-desktop-portal-hyprland", "xdg-desktop-portal-gtk", "foot", 
         "hyprpaper", "polkit-gnome", "mako", "nautilus", "rofi", "firefox", 
         "ly", "network-manager-applet", "ntfs-3g", "waybar", "qt5ct", "qt6ct", 
         "copyq", "hypridle", "hyprlock", "python-gobject", "grim", "flameshot", 
-        "gnome-themes-extra", "gnome-system-monitor", "networkmanager", "grub", 
+        "gnome-themes-extra", "gnome-system-monitor", "networkmanager", "grub",
+        "fish", "xorg-xhost",
+
+        # Soft and development
         "github-cli", "telegram-desktop", "steam", "discord", "prismlauncher", 
-        "code", "fish", "xorg-xhost", "intellij-idea-community-edition", "gvfs", 
-        "gvfs-mtp", "gvfs-gphoto2", "file-roller", "gvfs-afc", "tumbler", 
-        "ffmpegthumbnailer", "gvfs-google", "poppler-glib", "gvfs-nfs", 
-        "unrar", "obsidian"
+        "intellij-idea-community-edition", "obsidian",
+        "libreoffice-fresh",
+
+        # Nautilus packages
+        "gvfs", "gvfs-mtp", "gvfs-gphoto2", "file-roller", "gvfs-afc", "tumbler", 
+        "ffmpegthumbnailer", "gvfs-google", "poppler-glib", "gvfs-nfs", "unrar", 
+        "unzip", "p7zip",
+
+        # media, player, and image viewer
+        "vlc", "vlc-plugins-all",
+        "ffmpeg", "gst-libav", "gst-plugins-bad", "gst-plugins-base", 
+        "gst-plugins-good", "gst-plugins-ugly", "libdvdcss", "libde265",
+        "a52dec", "faac", "faad2", "mpv", "loupe"
     ]
+
 
     fonts = [
         "noto-fonts", "noto-fonts-emoji", "noto-fonts-cjk", "ttf-dejavu", 
@@ -150,7 +170,9 @@ if __name__ == "__main__":
         "jdk21-temurin",
         "portproton",
         "xone-dongle-firmware",
-        "crystal-dock"
+        "crystal-dock",
+        "antigravity",
+        "pacseek"
     ]
 
     main = Main(packages, parupkg)
