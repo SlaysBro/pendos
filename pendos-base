@@ -123,7 +123,7 @@ if __name__ == "__main__":
         # Kernel and drivers
         "linux-zen", "linux-zen-headers", "base-devel", "git", "python", 
         "nano", "fastfetch", "os-prober", "nvidia-open-dkms", "nvidia-utils", 
-        "lib32-nvidia-utils", "egl-wayland", "libva-nvidia-driver", # Добавил VA-API для NVIDIA
+        "lib32-nvidia-utils", "egl-wayland", "libva-nvidia-driver",
 
         # Sound
         "pipewire", "pipewire-pulse", "wireplumber", "pavucontrol", 
@@ -170,7 +170,6 @@ if __name__ == "__main__":
         "jdk21-temurin",
         "portproton",
         "xone-dongle-firmware",
-        "crystal-dock",
         "antigravity",
         "pacseek"
     ]
