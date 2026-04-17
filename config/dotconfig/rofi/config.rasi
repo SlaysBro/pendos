@@ -1,6 +1,5 @@
+configuration {
+	show-icons: true;
+}
 
-//@theme "/usr/share/rofi/themes/Arc-Dark.rasi"
-
-//@theme "/usr/share/rofi/themes/fullscreen-preview.rasi"
-
-@theme "/usr/share/rofi/themes/Arc-Dark.rasi"
+@theme "~/.config/rofi/themes/pendos.rasi"
