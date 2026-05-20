@@ -86,10 +86,6 @@ class Main:
         print("\n[5/10] Installing AUR packages...")
         self.base_paru(self.parupkg)
         
-        # 6. Config files copying
-        print("\n[6/10] Copying configuration files...")
-        self.cp_config()
-        
         # 7. NetworkManager configuration
         print("\n[7/10] Configuring NetworkManager...")
         self.nm_fixes()
