@@ -126,7 +126,7 @@ if __name__ == "__main__":
         "ly", "network-manager-applet", "ntfs-3g", "waybar", "qt5ct", "qt6ct", 
         "copyq", "hypridle", "hyprlock", "python-gobject", "grim", "flameshot", 
         "gnome-themes-extra", "gnome-system-monitor", "networkmanager",
-        "fish", "xorg-xhost",
+        "fish", "xorg-xhost", "wl-clipboard",
 
         #social and gaming
         "telegram-desktop", "steam", "discord",
@@ -143,7 +143,7 @@ if __name__ == "__main__":
         # Nautilus packages
         "gvfs", "gvfs-mtp", "gvfs-gphoto2", "file-roller", "gvfs-afc", "tumbler", 
         "ffmpegthumbnailer", "poppler-glib", "gvfs-nfs", "unrar", 
-        "unzip", "p7zip"
+        "unzip", "p7zip", "zip"
     ]
 
 
@@ -164,7 +164,7 @@ if __name__ == "__main__":
         #VPN
         "v2rayn-bin",
         "amneziavpn",
-        "tg-ws-proxy"
+        "tg-ws-proxy-bin",
 
         #xbox controller driver
         "xone-dkms",
@@ -172,7 +172,9 @@ if __name__ == "__main__":
 
         #JAVA
         "jdk21-temurin",
-	    "jdk-temurin"
+	    "jdk-temurin",
+
+        "rate-mirrors"
     ]
 
     main = Main(packages, parupkg)
