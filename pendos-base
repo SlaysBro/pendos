@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 
-from os import system as sys
 from os import scandir
 import subprocess
 
-class Main:	
+class Main:
     def __init__(self, packages, parupkg):
         self.packages = packages
         self.parupkg = parupkg
@@ -23,10 +22,10 @@ class Main:
         return result
 
     def install(self, packages):
-	    self.run_command(f"sudo pacman -Syu --needed {' '.join(packages)}")
+        self.run_command(f"sudo pacman -Syu --needed {' '.join(packages)}")
 
     def pinstall(self, packages):
-	    self.run_command(f"paru -Syu --needed {' '.join(packages)}")
+        self.run_command(f"paru -Syu --needed {' '.join(packages)}")
 
     def base(self, packages):
         self.install(packages)
@@ -54,9 +53,9 @@ class Main:
         self.run_command("cd ../ && rm -rf ./paru")
 
     #Microslop ntfs-3g fix
-    # def setup_udisks(self):
-    #     self.run_command("sudo cp config/system/mount_options.conf /etc/udisks2")
-    #     self.run_command("sudo systemctl restart udisks2")
+    def setup_udisks(self):
+        self.run_command("sudo cp config/system/mount_options.conf /etc/udisks2")
+        self.run_command("sudo systemctl restart udisks2")
 
     def setup_login_manager(self):
         self.run_command("sudo systemctl enable --now ly@tty1")
@@ -113,8 +112,8 @@ if __name__ == "__main__":
         "base-devel", "git", "python", "nano", "fastfetch", "egl-wayland",
 
         #Nvidia
-        "nvidia-open-dkms", "nvidia-utils", 
-        "lib32-nvidia-utils", "libva-nvidia-driver",
+        #"nvidia-open-dkms", "nvidia-utils", 
+        #"lib32-nvidia-utils", "libva-nvidia-driver",
 
         # Sound
         "pipewire", "pipewire-pulse", "wireplumber", "pavucontrol", 
@@ -129,7 +128,8 @@ if __name__ == "__main__":
         "fish", "xorg-xhost", "wl-clipboard",
 
         #social and gaming
-        "telegram-desktop", "steam", "discord",
+        "telegram-desktop", "steam", "discord", "protonup-qt",
+        "mangohud", "lib32-mangohud"
 
         #text
         "obsidian",
@@ -143,7 +143,11 @@ if __name__ == "__main__":
         # Nautilus packages
         "gvfs", "gvfs-mtp", "gvfs-gphoto2", "file-roller", "gvfs-afc", "tumbler", 
         "ffmpegthumbnailer", "poppler-glib", "gvfs-nfs", "unrar", 
-        "unzip", "p7zip", "zip"
+        "unzip", "p7zip", "zip",
+
+        #media
+        "loupe", "mpv", "mousepad", "kdenlive", "gpu-screen-recorder-ui",
+        "gpu-screen-recorder"
     ]
 
 
@@ -172,7 +176,7 @@ if __name__ == "__main__":
 
         #JAVA
         "jdk21-temurin",
-	    "jdk-temurin",
+        "jdk-temurin",
 
         "rate-mirrors"
     ]
