@@ -125,7 +125,7 @@ if __name__ == "__main__":
         "ly", "network-manager-applet", "ntfs-3g", "waybar", "qt5ct", "qt6ct", 
         "copyq", "hypridle", "hyprlock", "python-gobject", "grim", "flameshot", 
         "gnome-themes-extra", "gnome-system-monitor", "networkmanager",
-        "fish", "xorg-xhost", "wl-clipboard",
+        "fish", "xorg-xhost", "wl-clipboard", "uwsm"
 
         #social and gaming
         "telegram-desktop", "steam", "discord", "protonup-qt",
