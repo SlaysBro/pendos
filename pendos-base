@@ -129,13 +129,13 @@ if __name__ == "__main__":
 
         #social and gaming
         "telegram-desktop", "steam", "discord", "protonup-qt",
-        "mangohud", "lib32-mangohud"
+        "mangohud", "lib32-mangohud",
 
         #text
         "obsidian",
 
         # Soft and development
-        "github-cli", "intellij-idea-community-edition", 
+        "github-cli", "intellij-idea-community-edition", "blender", "godot"
 
         #Minecraft
         "prismlauncher", 
@@ -147,7 +147,10 @@ if __name__ == "__main__":
 
         #media
         "loupe", "mpv", "mousepad", "kdenlive", "gpu-screen-recorder-ui",
-        "gpu-screen-recorder", "gamemode", "lib32-gamemode", "goverlay"
+        "gpu-screen-recorder", "gamemode", "lib32-gamemode", "goverlay",
+        
+        #package managers
+        "flatpak"
     ]
 
 
@@ -167,6 +170,7 @@ if __name__ == "__main__":
 
         #VPN
         "v2rayn-bin",
+        "throne-bin",
         "amneziavpn",
         "tg-ws-proxy-bin",
 
@@ -178,7 +182,10 @@ if __name__ == "__main__":
         "jdk21-temurin",
         "jdk-temurin",
 
-        "rate-mirrors"
+        "rate-mirrors",
+
+        "lutris",
+        "heroic-games-launcher-bin"
     ]
 
     main = Main(packages, parupkg)
